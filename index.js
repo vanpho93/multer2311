@@ -34,6 +34,10 @@ function getUpload(fieldname){
   return multer({storage, fileFilter, limits}).single(fieldname);
 }
 
+function getArrayUpload(fieldname){
+  return multer({storage, fileFilter, limits}).array(fieldname);
+}
+
 var app = express();
 app.set('view engine', 'ejs');
 app.set('views', './views');
@@ -61,7 +65,17 @@ app.post('/xulydangtin', function(req, res){
     if(err){
       res.send(''+err);
     }else{
-      res.send('Thanh cong');
+      res.send('Thanh cong' + JSON.stringify(req.file));
     }
   });
+});
+
+app.post('/xuly', function(req, res){
+  getArrayUpload("hinhsanpham")(req, res, function(err){
+    if(err){
+      res.send(''+err);
+    }else{
+      res.send('Thanh cong'+ JSON.stringify(req.files));
+    }
+  })
 });
